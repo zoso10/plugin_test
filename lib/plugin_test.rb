@@ -26,7 +26,7 @@ module PluginTest
             Pathname(File.expand_path("Gemfile_next.lock")),
             {}
           )
-          Bundler::Installer.new(Bundler.root, definition).run
+          Bundler::Installer.new(Bundler.root, definition).run({})
         ensure
           ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
         end
