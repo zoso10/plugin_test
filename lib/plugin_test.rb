@@ -19,7 +19,7 @@ module PluginTest
         Bundler.ui.warn("Bundling for NEXT")
         gemfile_next_path = File.expand_path("Gemfile_next.lock")
         ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
-        Bundler::Installer.new(Bundler.root, Bundler.definition).
+        Bundler::Installer.new(Bundler.root, Bundler.definition(true)).
           run(gemfile: gemfile_next_path)
         ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
       end
