@@ -1,4 +1,5 @@
 require "plugin_test/version"
+require "pathname"
 
 module PluginTest
   class Error < StandardError; end
@@ -18,12 +19,17 @@ module PluginTest
       self.class.hook("after-install-all") do
         Bundler.ui.warn("Bundling for NEXT")
         gemfile_next_path = File.expand_path("Gemfile_next.lock")
-        ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
-        ENV["BUNDLE_GEMFILE"] = "Gemfile_next"
-        Bundler::Installer.new(Bundler.root, Bundler.definition(true)).
-          run(gemfile: gemfile_next_path)
-        ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
-        ENV.delete("BUNDLE_GEMFILE")
+        begin
+          ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
+          definition = Bundler::Definition.build(
+            Pathname(File.expand_path("Gemfile")),
+            Pathname(File.expand_path("Gemfile_next.lock")),
+            {}
+          )
+          Bundler::Installer.new(Bundler.root, definition).run
+        ensure
+          ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
+        end
       end
     end
   end
