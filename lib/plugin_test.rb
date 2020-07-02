@@ -18,8 +18,10 @@ module PluginTest
       self.class.hook("after-install-all") do
         Bundler.ui.warn("Bundling for NEXT")
         gemfile_next_path = File.expand_path("Gemfile_next.lock")
+        ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
         Bundler::Installer.new(Bundler.root, Bundler.definition).
           run(gemfile: gemfile_next_path)
+        ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
       end
     end
   end
