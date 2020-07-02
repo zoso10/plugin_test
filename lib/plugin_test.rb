@@ -18,7 +18,11 @@ module PluginTest
       self.class.hook("after-install-all") do
         Bundler.ui.warn("Bundling for NEXT")
         gemfile_next_path = File.expand_path("Gemfile_next.lock")
-        Bundler::Installer.install(Bundler.root, Bundler.definition, options)
+        Bundler::Installer.install(
+          Bundler.root,
+          Bundler.definition,
+          gemfile: gemfile_next_path
+        )
       end
     end
   end
