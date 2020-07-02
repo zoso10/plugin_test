@@ -16,9 +16,12 @@ module PluginTest
   class Hook < Bundler::Plugin::API
     def setup
       self.class.hook("after-install-all") do
-        Bundler.ui.warn("Bundling for NEXT")
-        gemfile_next_path = File.expand_path("Gemfile_next.lock")
-        Bundler::CLI::Install.new(gemfile: gemfile_next_path).run
+        if $bad != 1
+          Bundler.ui.warn("Bundling for NEXT")
+          gemfile_next_path = File.expand_path("Gemfile_next.lock")
+          Bundler::CLI::Install.new(gemfile: gemfile_next_path).run
+          $bad = 1
+        end
       end
     end
   end
