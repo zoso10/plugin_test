@@ -1,5 +1,4 @@
 require "plugin_test/version"
-require "bundler"
 
 module PluginTest
   class Error < StandardError; end
@@ -13,6 +12,17 @@ module PluginTest
       puts "You called " + command_name + " with args: " + args.inspect
     end
   end
+
+  class Hook < Bundler::Plugin::API
+    def setup
+      self.class.hook("after-install-all") do
+        Bundler.ui.warn("Bundling for NEXT")
+        gemfile_next_path = File.expand_path("Gemfile_next.lock")
+        Bundler::Install.new(gemfile: gemfile_next_path).run
+      end
+    end
+  end
 end
 
 PluginTest::Command.new.setup
+PluginTest::Hook.new.setup
