@@ -19,14 +19,13 @@ module PluginTest
         Bundler.ui.confirm(unlock.inspect)
         Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        if current_definition.to_lock != @previous_lockfile
-          next_definition.resolve_remotely!
-        end
-
-        Bundler.ui.confirm("\nNow bundling for NEXT\n")
-
         begin
           ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
+          if current_definition.to_lock != @previous_lockfile
+            next_definition.resolve_remotely!
+          end
+
+          Bundler.ui.confirm("\nNow bundling for NEXT\n")
           Bundler::Installer.new(Bundler.root, next_definition).run({})
         ensure
           ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
