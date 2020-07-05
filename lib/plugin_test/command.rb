@@ -29,7 +29,7 @@ module PluginTest
 
     def exec(command, args)
       if args.first != "clean"
-        Bundler.io.warn("Unknown command: #{command}")
+        Bundler.ui.warn("Unknown command: #{command}")
         return
       end
 
