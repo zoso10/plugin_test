@@ -16,6 +16,34 @@ module PluginTest
         else
           FileUtils.cp(lockfile_path, next_lockfile_path)
         end
+      elsif args.include?("clean")
+        module Patch
+          def specs
+            super.merge(next_specs)
+          end
+
+          def next_specs
+            ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
+            deps = if Bundler.settings[:cache_all_platforms]
+                     dependencies
+                   else
+                     requested_dependencies
+                   end
+            next_specs = Bundler::Definition.
+              build(Pathname("Gemfile"), Pathname("Gemfile_next.lock"), nil).
+              resolve.
+              materialize(deps)
+          ensure
+            ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
+          end
+        end
+        Bundler::Definition.prepend(PluginTest::Command::Patch)
+
+        options = {
+          "dry-run" => args.include?("--dry-run"),
+          "force" => args.include?("--force"),
+        }
+        Bundler::CLI::Clean.new(options).run
       else
         puts "You called " + command_name + " with args: " + args.inspect
       end
