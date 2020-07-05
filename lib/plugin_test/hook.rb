@@ -5,6 +5,9 @@ module PluginTest
     def configure
       self.class.hook("before-install-all") do
         @previous_lockfile = Bundler.default_lockfile.read
+        Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        Bundler.ui.confirm(Bundler::CLI.options.inspect)
+        Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
       end
 
       self.class.hook("after-install-all") do
@@ -28,6 +31,10 @@ module PluginTest
             next_definition.lock(next_lock)
           else
             Bundler.ui.confirm("Now installing bundle for NEXT")
+            Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            Bundler.ui.confirm(Bundler::CLI.options.inspect)
+            Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             Bundler::Installer.new(Bundler.root, next_definition).run({})
           end
         ensure
