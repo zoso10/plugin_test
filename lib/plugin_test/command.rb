@@ -47,8 +47,8 @@ module PluginTest
         Bundler::Definition.prepend(PluginTest::Command::Patch)
 
         options = {
-          "dry-run" => args.include?("--dry-run"),
-          "force" => args.include?("--force"),
+          :"dry-run" => args.include?("--dry-run"),
+          :"force" => args.include?("--force"),
         }
         Bundler::CLI::Clean.new(options).run
       else
