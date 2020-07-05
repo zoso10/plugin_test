@@ -5,12 +5,10 @@ module PluginTest
     def setup
       self.class.hook("before-install-all") do
         if ENV["DEPENDENCY_NEXT_OVERRIDE"]
-          # set default lockfile to next lockfile
-          Bundler::SharedHelpers.singleton_class.class_eval do
-            def default_lockfile
-              Pathname(File.expand_path("Gemfile_next.lock"))
-            end
-          end
+          begin
+            ENV["BUNDLE_GEMFILE"] = "Gemfile_next"
+          ensure
+            ENV.delete("BUNDLE_GEMFILE")
         else
           @previous_lockfile = Bundler.default_lockfile.read
         end
