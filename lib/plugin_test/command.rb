@@ -24,33 +24,20 @@ module PluginTest
     end
 
     def configure
-      self.class.command "plugin_test"
+      self.class.command "clean"
     end
 
     def exec(command, args)
-      if args.include?("--init")
-        lockfile_path = File.expand_path("Gemfile.lock")
-        next_lockfile_path = File.expand_path("Gemfile_next.lock")
+      require "bundler/cli"
+      require "bundler/cli/clean"
 
-        if File.exists?(next_lockfile_path)
-          Bundler.ui.warn("Gemfile_next.lock already exists. Skipping.")
-        else
-          FileUtils.cp(lockfile_path, next_lockfile_path)
-        end
-      elsif args.include?("clean")
-        require "bundler/cli"
-        require "bundler/cli/clean"
+      Bundler::Definition.prepend(PluginTest::Command::Patch)
 
-        Bundler::Definition.prepend(PluginTest::Command::Patch)
-
-        options = {
-          "dry-run": args.include?("--dry-run"),
-          "force": args.include?("--force"),
-        }
-        Bundler::CLI::Clean.new(options).run
-      else
-        puts "You called " + command + " with args: " + args.inspect
-      end
+      options = {
+        "dry-run": args.include?("--dry-run"),
+        "force": args.include?("--force"),
+      }
+      Bundler::CLI::Clean.new(options).run
     end
   end
 end
