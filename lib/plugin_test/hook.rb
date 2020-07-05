@@ -8,6 +8,8 @@ module PluginTest
       end
 
       self.class.hook("after-install-all") do
+        next if ENV["DEPENDENCY_NEXT_OVERRIDE"]
+
         current_definition = Bundler.definition
         unlock = current_definition.instance_variable_get(:@unlock)
 
