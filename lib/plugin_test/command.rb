@@ -49,7 +49,7 @@ module PluginTest
         }
         Bundler::CLI::Clean.new(options).run
       else
-        puts "You called " + command_name + " with args: " + args.inspect
+        puts "You called " + command + " with args: " + args.inspect
       end
     end
   end
