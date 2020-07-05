@@ -21,10 +21,11 @@ module PluginTest
           )
 
           if current_definition.to_lock != @previous_lockfile
-            next_definition.resolve_remotely!
+            Bundler.ui.confirm("Now updating bundle for NEXT")
+            next_definition.resolve_with_cache!
             next_definition.lock(next_lock)
           else
-            Bundler.ui.confirm("\nNow bundling for NEXT\n")
+            Bundler.ui.confirm("Now installing bundle for NEXT")
             Bundler::Installer.new(Bundler.root, next_definition).run({})
           end
         ensure
