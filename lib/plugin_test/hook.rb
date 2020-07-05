@@ -9,6 +9,7 @@ module PluginTest
             ENV["BUNDLE_GEMFILE"] = "Gemfile_next"
           ensure
             ENV.delete("BUNDLE_GEMFILE")
+          end
         else
           @previous_lockfile = Bundler.default_lockfile.read
         end
