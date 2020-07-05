@@ -3,10 +3,11 @@
 module PluginTest
   class Hook < Bundler::Plugin::API
     def setup
-      self.class.hook("before-install-all") do
+      self.class.hook("before-install-all") do |foo|
         if ENV["DEPENDENCY_NEXT_OVERRIDE"]
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
           Bundler.ui.confirm("in before-install-all")
+          Bundler.ui.confirm(foo.inspect)
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
           Bundler::SharedHelpers.singleton_class.class_eval do
             def default_lockfile
