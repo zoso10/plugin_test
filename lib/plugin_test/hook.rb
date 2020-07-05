@@ -10,8 +10,6 @@ module PluginTest
       self.class.hook("after-install-all") do
         current_definition = Bundler.definition
         unlock = current_definition.instance_variable_get(:@unlock)
-        env_already_set = ENV["DEPENDENCY_NEXT_OVERRIDE"]
-        lockfile_changed = current_definition != @previous_lockfile
 
         begin
           ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
@@ -21,11 +19,8 @@ module PluginTest
             next_lock,
             unlock
           )
-          Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-          Bundler.ui.confirm(next_definition.object_id)
-          Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-          if lockfile_changed
+          if current_definition != @previous_lockfile
             next_definition.resolve_remotely!
             next_definition.lock(next_lock)
           else
