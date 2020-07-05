@@ -13,10 +13,11 @@ module PluginTest
 
         begin
           ENV["DEPENDENCY_NEXT_OVERRIDE"] = "1"
+          next_lock = Pathname(File.expand_path("Gemfile_next.lock"))
           next_definition = Bundler::Definition.build(
             Pathname(File.expand_path("Gemfile")),
-            Pathname(File.expand_path("Gemfile_next.lock")),
-            unlock
+            next_lock
+            unlock.merge(ruby: nil)
           )
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
           Bundler.ui.confirm(unlock.inspect)
@@ -24,6 +25,7 @@ module PluginTest
 
           if current_definition.to_lock != @previous_lockfile
             next_definition.resolve_remotely!
+            next_definition.lock(next_lock)
           end
 
           Bundler.ui.confirm("\nNow bundling for NEXT\n")
