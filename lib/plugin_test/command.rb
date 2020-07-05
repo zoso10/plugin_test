@@ -19,6 +19,7 @@ module PluginTest
             FileUtils.cp(lockfile_path, next_lockfile_path)
           ensure
             ENV.delete("DEPENDENCY_NEXT_OVERRIDE")
+          end
         end
       else
         puts "You called " + command_name + " with args: " + args.inspect

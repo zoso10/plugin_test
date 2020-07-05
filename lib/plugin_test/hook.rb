@@ -20,7 +20,7 @@ module PluginTest
             unlock
           )
 
-          if current_definition != @previous_lockfile
+          if current_definition.to_lock != @previous_lockfile
             next_definition.resolve_remotely!
             next_definition.lock(next_lock)
           else
