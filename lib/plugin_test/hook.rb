@@ -17,10 +17,17 @@ module PluginTest
           next_definition = Bundler::Definition.build(
             Pathname(File.expand_path("Gemfile")),
             next_lock,
-            unlock.merge(ruby: nil)
+            unlock
+          )
+          another_next_definition = Bundler::Definition.build(
+            Pathname(File.expand_path("Gemfile")),
+            next_lock,
+            unlock
           )
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-          Bundler.ui.confirm(unlock.inspect)
+          Bundler.ui.confirm(next_definition.object_id)
+          Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+          Bundler.ui.confirm(another_next_definition.object_id)
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
           if current_definition.to_lock != @previous_lockfile
