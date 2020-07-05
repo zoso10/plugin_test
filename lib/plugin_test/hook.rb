@@ -16,7 +16,7 @@ module PluginTest
           next_lock = Pathname(File.expand_path("Gemfile_next.lock"))
           next_definition = Bundler::Definition.build(
             Pathname(File.expand_path("Gemfile")),
-            next_lock
+            next_lock,
             unlock.merge(ruby: nil)
           )
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
