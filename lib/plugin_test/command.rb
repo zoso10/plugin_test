@@ -24,15 +24,14 @@ module PluginTest
     end
 
     def configure
-      self.class.command "clean"
+      self.class.command "plugin_test"
     end
 
     def exec(command, args)
-      Bundler.ui.warn("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-      Bundler.ui.warn(command)
-      Bundler.ui.warn(args)
-      Bundler.ui.warn("looks like it worked?")
-      Bundler.ui.warn("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+      if args.first != "clean"
+        Bundler.io.warn("Unknown command: #{command}")
+        return
+      end
 
       require "bundler/cli"
       require "bundler/cli/clean"
