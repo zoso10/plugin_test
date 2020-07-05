@@ -38,6 +38,9 @@ module PluginTest
           FileUtils.cp(lockfile_path, next_lockfile_path)
         end
       elsif args.include?("clean")
+        require "bundler/cli"
+        require "bundler/cli/clean"
+
         Bundler::Definition.prepend(PluginTest::Command::Patch)
 
         options = {
