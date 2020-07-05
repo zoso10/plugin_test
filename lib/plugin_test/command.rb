@@ -38,6 +38,9 @@ module PluginTest
           FileUtils.cp(lockfile_path, next_lockfile_path)
         end
       elsif args.include?("clean")
+        Bunder.io.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        Bunder.io.info(args.inspect)
+        Bunder.io.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         require "bundler/cli"
         require "bundler/cli/clean"
 
