@@ -38,17 +38,14 @@ module PluginTest
           FileUtils.cp(lockfile_path, next_lockfile_path)
         end
       elsif args.include?("clean")
-        Bundler.ui.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        Bundler.ui.info(args.inspect)
-        Bundler.ui.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         require "bundler/cli"
         require "bundler/cli/clean"
 
         Bundler::Definition.prepend(PluginTest::Command::Patch)
 
         options = {
-          :"dry-run" => args.include?("--dry-run"),
-          :"force" => args.include?("--force"),
+          "dry-run": args.include?("--dry-run"),
+          "force": args.include?("--force"),
         }
         Bundler::CLI::Clean.new(options).run
       else
