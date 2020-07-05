@@ -2,7 +2,7 @@
 
 module PluginTest
   class Command < Bundler::Plugin::API
-    def setup
+    def configure
       self.class.command "plugin_test"
     end
 
