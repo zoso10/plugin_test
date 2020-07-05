@@ -25,10 +25,10 @@ module PluginTest
           Bundler.ui.confirm(next_definition.object_id)
           Bundler.ui.confirm("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-          if lockfile_changed || env_already_set
+          if lockfile_changed
             next_definition.resolve_remotely!
             next_definition.lock(next_lock)
-          elsif !lockfile_changed
+          else
             Bundler.ui.confirm("\nNow bundling for NEXT\n")
             Bundler::Installer.new(Bundler.root, next_definition).run({})
           end
