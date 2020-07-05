@@ -11,7 +11,7 @@ module PluginTest
         lockfile_path = File.expand_path("Gemfile.lock")
         next_lockfile_path = File.expand_path("Gemfile_next.lock")
 
-        if File.exists?(next_lockfile)
+        if File.exists?(next_lockfile_path)
           Bundler.ui.warn("Gemfile_next.lock already exists. Skipping.")
         else
           FileUtils.cp(lockfile_path, next_lockfile_path)
